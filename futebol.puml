@@ -1,0 +1,111 @@
+@startchen
+
+entity Pessoa {
+    id: int <<key>>
+    nome: String
+    data_nascimento: Date
+    cpf: string
+}
+
+entity Jogador {
+    id: int <<key>>
+    numero_camisa: int
+    posicao: String
+    altura: float
+    peso: float
+    nacionalidade: String
+}
+
+entity Partida {
+    time_casa
+    time_visitante
+    data_e_hora
+    local
+}
+
+entity Time {
+    id: int <<key>>
+    nome: String
+    sigla: String
+}
+
+entity Rodada {
+    id: int <<key>>
+    numero: int
+    data_inicio: Date
+    data_fim: Date
+}
+
+entity Faltas {
+    id: int <<key>>
+    partida_id: int
+    jogador_id: int
+    hora: DateTime
+}
+
+entity Laterais {
+    id: int <<key>>
+    partida_id: int
+    jogador_id: int
+    hora: DateTime
+}
+
+entity Escanteios {
+    id: int <<key>>
+    partida_id: int
+    jogador_id: int
+    hora: DateTime
+}
+
+entity Gols {
+    partida_id: int
+    hora: DateTime
+    pontuador_id: int
+}
+
+entity Cartoes {
+}
+
+entity Arbitro {
+}
+
+entity Tecnico {
+}
+
+entity Funcionario {
+}
+
+entity Torcedor {
+}
+
+entity Estadio {
+}
+
+entity Ingresso {
+}
+
+Pessoa ->- o { Funcionario, Torcedor }
+Funcionario ->- d { Jogador, Arbitro, Tecnico }
+
+relationship "Trabalha em" as TrabalhaEmTime {
+    matricula
+    data_admissao
+}
+
+Funcionario -N- TrabalhaEmTime
+TrabalhaEmTime -1- Time
+
+relationship "Participa de" as ParticipaDePartida {
+}
+
+Time -N- ParticipaDePartida
+ParticipaDePartida -N- Partida
+
+relationship Possui {
+}
+
+Partida -N- Possui
+Jogador -N- Possui
+Possui -N- Gols
+
+@endchen
