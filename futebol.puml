@@ -4,7 +4,8 @@ entity Pessoa {
     id: int <<key>>
     nome: String
     data_nascimento: Date
-    cpf: string
+    cpf: String
+    nacionalidade: String
 }
 
 entity Jogador {
@@ -13,7 +14,6 @@ entity Jogador {
     posicao: String
     altura: float
     peso: float
-    nacionalidade: String
 }
 
 entity Partida {
@@ -36,21 +36,7 @@ entity Rodada {
     data_fim: Date
 }
 
-entity Faltas {
-    id: int <<key>>
-    partida_id: int
-    jogador_id: int
-    hora: DateTime
-}
-
-entity Laterais {
-    id: int <<key>>
-    partida_id: int
-    jogador_id: int
-    hora: DateTime
-}
-
-entity Escanteios {
+entity Falta {
     id: int <<key>>
     partida_id: int
     jogador_id: int
@@ -63,25 +49,26 @@ entity Gols {
     pontuador_id: int
 }
 
-entity Cartoes {
+entity Cartao {
+    id: int <<key>>
+    partida_id: int
+    jogador_id: int
+    tipo: String
+    hora: DateTime
 }
 
 entity Arbitro {
+    id: int <<key>>
 }
 
 entity Tecnico {
 }
 
 entity Funcionario {
+    salario: float
 }
 
 entity Torcedor {
-}
-
-entity Estadio {
-}
-
-entity Ingresso {
 }
 
 Pessoa ->- o { Funcionario, Torcedor }
@@ -101,11 +88,30 @@ relationship "Participa de" as ParticipaDePartida {
 Time -N- ParticipaDePartida
 ParticipaDePartida -N- Partida
 
-relationship Possui {
+relationship "Possui" as PossuiGols {
 }
 
-Partida -N- Possui
-Jogador -N- Possui
-Possui -N- Gols
+Partida -1- PossuiGols
+Jogador -1- PossuiGols
+PossuiGols -N- Gols
 
+relationship "Tem" as TemPartida {
+}
+
+Rodada -1- TemPartida
+TemPartida -N- Partida
+
+relationship "Comete" as PossuiFaltas {
+}
+
+relationship "Recebe" as PossuiCartoes {
+}
+
+Partida -1- PossuiFaltas
+Jogador -1- PossuiFaltas
+PossuiFaltas -N- Falta
+
+Partida -1- PossuiCartoes
+Jogador -1- PossuiCartoes
+PossuiCartoes -N- Cartao
 @endchen
