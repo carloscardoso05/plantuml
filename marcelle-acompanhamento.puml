@@ -1,0 +1,24 @@
+@startuml
+
+left to right direction
+
+:Sistema: as sistema
+:Coordenação: as coord
+:Orientador: as orient
+:Aluno: as aluno
+
+rectangle "Acompanhamento acadêmico" {
+    (Verificar situação do aluno) as verSit
+    coord --> verSit
+    aluno --> verSit
+    orient --> verSit
+
+    (Verificar tempo no curso) as verTempo
+    coord --> verTempo
+
+    (Notificar aluno sobre pendências) as notificar
+    notificar <-- sistema : Notificação automática
+    coord --> notificar
+}
+
+@enduml

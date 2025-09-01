@@ -43,14 +43,14 @@ entity Faltas {
     hora: DateTime
 }
 
-entity Laterais {
+entity Lateral {
     id: int <<key>>
     partida_id: int
     jogador_id: int
     hora: DateTime
 }
 
-entity Escanteios {
+entity Escanteio {
     id: int <<key>>
     partida_id: int
     jogador_id: int
@@ -58,12 +58,14 @@ entity Escanteios {
 }
 
 entity Gols {
+    id: int <<key>>
     partida_id: int
     hora: DateTime
     pontuador_id: int
 }
 
-entity Cartoes {
+entity Cartao {
+
 }
 
 entity Arbitro {

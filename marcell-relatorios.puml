@@ -1,0 +1,27 @@
+@startuml
+
+left to right direction
+
+:Coordenação: as coord
+:Orientador: as orient
+:Aluno: as aluno
+
+rectangle Relatórios {
+    (Verificar estatísticas gerais sobre os alunos) as estat
+    coord --> estat
+    aluno --> estat
+
+    (Verificar quantidade de alunos por orientador) as qtdOrient
+    coord --> qtdOrient
+    orient --> qtdOrient
+
+    (Verificar situação de alunos por orientador) as sitOrient
+    coord --> sitOrient
+    orient --> sitOrient
+
+    (Verificar taxa de sucesso por orientador) as sucOrient
+    coord --> sucOrient
+    orient --> sucOrient
+}
+
+@enduml

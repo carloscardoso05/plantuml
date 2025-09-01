@@ -1,0 +1,100 @@
+@startchen
+
+entity ObraDeArte {
+    cod_obra <<key>>
+    cod_artista
+    ano_criacao
+    titulo
+    descricao
+    pais_de_origem
+}
+
+entity Ceramica {
+    cod_ceramica <<key>>
+    cod_obra <<key>>
+    material
+    dimensoes {
+        altura
+        largura
+        comprimento
+    }
+}
+
+entity Pintura {
+    cod_pintura <<key>>
+    cod_obra <<key>>
+    textura
+    estado_conservacao
+}
+
+entity Escultura {
+    cod_escultura <<key>>
+    cod_obra <<key>>
+    material
+    dimensoes {
+        altura
+        largura
+        comprimento
+    }
+}
+
+ObraDeArte ->- d {Ceramica, Pintura, Escultura}
+
+entity Artista {
+    cod_artista <<key>>
+    nome
+    data_nascimento
+    data_falecimento
+    pais_de_origem
+    estilo_dominante
+}
+
+entity Epoca {
+    id <<key>>
+    descricao
+}
+
+entity ColecaoPermanente {
+    cod_colecao <<key>>
+    cod_obra <<key>>
+    data_aquisicao
+    tipo_exposicao
+    custo
+}
+
+entity Emprestado {
+    cod_emprestado <<key>>
+    cod_colecao <<key>>
+    data_emprestimo
+    data_devolucao
+}
+
+entity Exposicao {
+    cod_exposicao <<key>>
+    nome
+    data_inicio
+    data_encerramento
+}
+
+relationship Cria {
+}
+Artista -1- Cria
+ObraDeArte -N- Cria
+
+relationship Pertence {
+}
+ObraDeArte -1- Pertence
+Epoca -1- Pertence
+
+relationship PodeSer {
+}
+ObraDeArte -1- PodeSer
+ColecaoPermanente -(0,1)- PodeSer
+Emprestado -(0,1)- PodeSer
+
+relationship FazParteDe {
+}
+ObraDeArte -N- FazParteDe
+Exposicao -N- FazParteDe
+
+@endchen

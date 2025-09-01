@@ -1,0 +1,95 @@
+@startchen
+' -------------------------------------------------------------
+' Definicao das Entidades
+' -------------------------------------------------------------
+
+entity Pessoa {
+    cpf <<key>>
+    nome
+    data_nascimento
+    nome_pai
+    nome_mae
+    endereco {
+        cidade
+        estado
+        logradouro
+        bairro
+        numero
+        complemento
+    }
+    telefone
+}
+
+entity Juiz {
+    matricula_juiz <<key>>
+}
+
+entity Cartorio {
+    cod_cartorio <<key>>
+    descricao
+}
+
+entity Vara {
+    cod_vara <<key>>
+    descricao
+    matricula_juiz
+    cod_cartorio
+}
+
+entity Processo {
+    cod_processo <<key>>
+    data_distribuicao
+    area_judicial
+    tipo_processo
+}
+
+entity Despacho {
+    cod_despacho <<key>>
+    texto
+    data
+    cod_processo
+    matricula_juiz
+}
+
+
+' -------------------------------------------------------------
+' Definicao dos Relacionamentos
+' -------------------------------------------------------------
+
+relationship ParticipaDe {
+    tipo
+    cpf <<key>>
+    cod_processo <<key>>
+}
+Pessoa -N- ParticipaDe
+Processo -N- ParticipaDe
+
+relationship Profere {
+}
+Juiz -1- Profere
+Despacho -N- Profere
+
+relationship Recebe {
+}
+Vara -1- Recebe
+Processo -N- Recebe
+
+relationship PossuiJuiz {
+}
+Vara -1- PossuiJuiz
+Juiz -1- PossuiJuiz
+
+relationship ProcessoTemDespacho {
+}
+Processo -1- ProcessoTemDespacho
+Despacho -N- ProcessoTemDespacho
+
+relationship PossuiCartorio {
+}
+Vara -1- PossuiCartorio
+Cartorio -1- PossuiCartorio
+
+Pessoa ->- Juiz
+
+
+@endchen

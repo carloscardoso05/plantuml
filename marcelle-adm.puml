@@ -1,0 +1,16 @@
+@startuml
+left to right direction
+
+:Coordenação: as coord
+
+rectangle Administração {
+    (Cadastrar usuário) as cadastrar
+    coord --> cadastrar
+
+    (Importar dados de aluno via PDFs) as importar
+    coord --> importar
+
+    (Editar dados de aluno) as editar
+    coord --> editar
+}
+@enduml

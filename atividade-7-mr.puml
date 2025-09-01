@@ -1,0 +1,119 @@
+@startuml
+skinparam linetype ortho
+
+!define primary_key(x) <b><color:#b8861b><&key></color> x</b>
+!define foreign_key(x) <color:#aaaaaa><&key></color> x
+!define column(x) <color:#efefef><&media-record></color> x
+!define table(x) entity x << (T, white) >>
+
+table("PAÍS"){
+    primary_key(id) : Integer
+    --
+    nome : String
+}
+
+table("ESTILO") {
+    primary_key(id) : Integer
+    --
+    descricao : String
+}
+
+table("ARTISTA") {
+    primary_key(id_artista) : Integer
+    --
+    nome : String
+    data_nascimento : Date
+    data_falecimento : Date
+    foreign_key(pais_origem_id) : Integer
+    foreign_key(estilo_dominante_id) : Integer
+}
+
+table("OBRA_DE_ARTE") {
+    primary_key(cod_obra) : Integer
+    --
+    titulo : String
+    ano_criacao : Integer
+    descricao : Text
+    pais_origem : String
+    foreign_key(id_artista) : Integer
+}
+
+table("PINTURA") {
+    primary_key(cod_pintura) : Integer
+    primary_key(foreign_key(cod_obra)) : Integer
+    --
+    textura : String
+    estado_conservacao : String
+}
+
+table("ESCULTURA") {
+    primary_key(cod_escultura) : Integer
+    primary_key(foreign_key(cod_obra)) : Integer
+    --
+    material : String
+    dimensoes : String
+}
+
+table("CERAMICA") {
+    primary_key(cod_ceramica) : Integer
+    primary_key(foreign_key(cod_obra)) : Integer
+    --
+    material : String
+    dimensoes : String
+}
+
+table("EPOCA") {
+    primary_key(id_epoca) : Integer
+    --
+    nome_epoca : String
+}
+
+table("COLECAO_PERMANENTE") {
+    primary_key(cod_colecao_permanente) : Integer
+    primary_key(foreign_key(cod_obra)) : Integer
+    --
+    data_aquisicao : Date
+    exposto : Boolean
+    custo : Decimal
+}
+
+table("EMPRESTIMO") {
+    primary_key(cod_emprestimo) : Integer
+    primary_key(foreign_key(cod_obra)) : Integer
+    --
+    colecao_emprestimo : String
+    data_emprestimo : Date
+    data_devolucao : Date
+}
+
+table("EXPOSICAO") {
+    primary_key(id_exposicao) : Integer
+    --
+    nome : String
+    data_inicio : Date
+    data_encerramento : Date
+}
+
+table("EXPOSICAO_OBRA") {
+    primary_key(id_exposicao) : Integer
+    primary_key(cod_obra) : Integer
+}
+
+' Relacionamentos
+ARTISTA "1" -- "N" OBRA_DE_ARTE : cria >
+EPOCA "1" -- "N" OBRA_DE_ARTE : pertence <
+
+OBRA_DE_ARTE "1" --- "1" PINTURA : é >
+OBRA_DE_ARTE "1" --- "1" CERAMICA : é >
+OBRA_DE_ARTE "1" --- "1" ESCULTURA : é >
+
+OBRA_DE_ARTE "1" --- "1" COLECAO_PERMANENTE : pertence a >
+OBRA_DE_ARTE "1" --- "1" EMPRESTIMO : é >
+
+EXPOSICAO "1" -- "N" EXPOSICAO_OBRA : contém >
+OBRA_DE_ARTE "1" -- "N" EXPOSICAO_OBRA : faz parte >
+
+ARTISTA "1" -- "1" ESTILO : domina >
+ARTISTA "1" -- "1" PAÍS : tem >
+
+@enduml

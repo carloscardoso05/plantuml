@@ -1,0 +1,101 @@
+@startuml
+skinparam linetype ortho
+
+!define primary_key(x) <b><color:#b8861b><&key></color> x</b>
+!define foreign_key(x) <color:#aaaaaa><&key></color> x
+!define column(x) <color:#efefef><&media-record></color> x
+!define table(x) entity x << (T, white) >>
+
+table(AREA_JUDICIAL) {
+    primary_key(id): Integer
+    descricao: String
+}
+
+table(TIPO_PROCESSO) {
+    primary_key(id): Integer
+    descricao: String
+}
+
+table(TIPO_PARTE) {
+    primary_key(id): Integer
+    descricao: String
+}
+
+table(PROCESSO) {
+    primary_key(cod_processo) : String
+    primary_key(foreign_key(cod_vara)): Integer
+    --
+    foreign_key(area_judicial_id): Integer
+    foreign_key(tipo_processo_id) : Integer
+    data_distribuicao : Date
+}
+
+table(VARA) {
+    primary_key(cod_vara) : Integer
+    --
+    foreign_key(cod_cartorio): Integer
+    foreign_key(matricula_juiz): Integer
+    descricao : String
+}
+
+table(JUIZ) {
+    primary_key(matricula_juiz) : String
+    primary_key(foreign_key(cpf)): String
+}
+
+table(CARTORIO) {
+    primary_key(cod_cartorio) : Integer
+    --
+    descricao : String
+}
+
+table(PESSOA) {
+    primary_key(cpf) : String
+    --
+    nome : String
+    data_nascimento : Date
+    nome_pai : String
+    nome_mae : String
+    cidade : String
+    estado : String
+    logradouro : String
+    bairro : String
+    numero : String
+    complemento : String
+    telefone : String
+}
+
+table(DESPACHO) {
+    primary_key(cod_despacho) : Integer
+    primary_key(foreign_key(cod_processo)) : String
+    --
+    texto : Text
+    data : Date
+}
+
+table(PARTICIPA_DE_PROCESSO) {
+    primary_key(foreign_key(cpf)) : String
+    primary_key(foreign_key(cod_processo)) : String
+    --
+    foreign_key(tipo_parte_id): Integer
+}
+
+' Relacionamentos
+VARA "1" -- "N" PROCESSO : Recebe >
+VARA "1" -- "1" JUIZ : Possui >
+VARA "N" -- "1" CARTORIO : Possui >
+
+JUIZ "1" -- "N" DESPACHO : Profere >
+PROCESSO "1" -- "N" DESPACHO : Tem >
+
+JUIZ "1" -- "1" PESSOA : é >
+
+PROCESSO "1" -- "N" PARTICIPA_DE_PROCESSO : "é parte de" >
+PESSOA "1" -- "N" PARTICIPA_DE_PROCESSO : "participa de" >
+
+PARTICIPA_DE_PROCESSO "1" -- "1" TIPO_PARTE : "Tem" >
+
+PROCESSO "1" -- "1" TIPO_PROCESSO : "Tem" >
+PROCESSO "1" -- "1" AREA_JUDICIAL : "Tem" >
+
+@enduml
